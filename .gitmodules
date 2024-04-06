@@ -1,0 +1,3 @@
+[submodule "django-commerce/commerce"]
+	path = django-commerce/commerce
+	url = git@github.com:zeindevs/django-commerce.git
