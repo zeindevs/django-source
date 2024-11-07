@@ -1,0 +1,6 @@
+@BASEURL = http://localhost:8000
+
+### Get Products
+GET {{BASEURL}}/products/
+Content-Type: application/json
+Authorization: Api-Key 
