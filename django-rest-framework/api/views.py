@@ -2,7 +2,7 @@ from django.db.models import Max
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework.decorators import api_view
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_api_key.permissions import HasAPIKey
@@ -11,16 +11,33 @@ from api.models import Order, Product
 from api.serializers import OrderSerializer, ProductInfoSerializer, ProductSerializer
 
 
-class ProductListAPIView(generics.ListAPIView):
-    queryset = Product.objects.filter(stock__gt=0)
+class ProductListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    # permission_classes = [HasAPIKey]
+
+    def get_permissions(self):
+        self.permission_classes = [AllowAny]
+        if self.request.method == "POST":
+            self.permission_classes = [IsAdminUser]
+        return super().get_permissions()
 
 
-class ProductDetailAPIView(generics.RetrieveAPIView):
+class ProductDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_url_kwarg = "product_id"
+
+    def get_permissions(self):
+        self.permission_classes = [AllowAny]
+        if self.request.method in ["PUT", "PATCH", "DELETE"]:
+            self.permission_classes = [IsAdminUser]
+        return super().get_permissions()
+
+
+# class ProductListAPIView(generics.ListAPIView):
+#     queryset = Product.objects.filter(stock__gt=0)
+#     serializer_class = ProductSerializer
+#     # permission_classes = [HasAPIKey]
 
 
 class OrderListAPIView(generics.ListAPIView):

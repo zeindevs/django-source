@@ -1,6 +1,30 @@
 @BASEURL = http://localhost:8000
 
-### Get Products
-GET {{BASEURL}}/products/
+### 
+POST {{BASEURL}}/products/
 Content-Type: application/json
 Authorization: Api-Key 
+
+{
+
+}
+
+### 
+GET {{BASEURL}}/products/
+
+###
+GET {{BASEURL}}/products/1
+
+###
+PUT {{BASEURL}}/products/1
+Content-Type: application/json
+
+{
+  "name": "Television",
+  "price": 300.00,
+  "stock": 14,
+  "description": "An amazing new TV"
+}
+
+###
+DELETE {{BASEURL}}/products/1
